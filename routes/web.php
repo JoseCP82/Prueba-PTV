@@ -9,4 +9,5 @@ Route::get('/', function () {
 });
 
 Route::get('/login', [LoginController::class, 'getUserByDni'])->name('login');
-Route::get('/formView', [FormViewController::class, 'renderFormView'])->name('formView');
+Route::get('/formView', [FormViewController::class])->name('formView');
+Route::post('/formView', [FormViewController::class, 'saveFormData'])->name('save');

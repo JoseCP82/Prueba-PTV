@@ -19,8 +19,6 @@ class LoginController extends Controller
                 $user = new UserResponse();
                 $user->userName = $data['Registro']['@attributes']['Nombre'];
                 $user->email = $data['Registro']['@attributes']['Email'];
-                
-                // return redirect()->route('formView')->with('data', $user);
                 return view('formView', compact('user'));
             } else {
                 // Maneja el error de respuesta HTTP de manera apropiada
