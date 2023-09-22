@@ -842,9 +842,10 @@
                 <label>Email:</label>
                 <input name="email" for="email" value="{{ $user->email }}" readonly></input>
             </div>
-
             <button>Enviar</button>
         </form>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @include('sweetalert::alert')
     </div>
 </body>
 
