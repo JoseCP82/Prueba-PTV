@@ -44,7 +44,7 @@
                             <label class="form-label">Firma:</label>
                             <canvas class="mb-3 form-control" id="canvas" width="600" height="200" style="border: 1px solid lightgrey;"></canvas>
                             <!-- Agrega un campo oculto para guardar la firma -->
-                            <input type="hidden" id="imagenFirma" name="imagenFirma">
+                            <input type="hidden" id="imgFirm" name="imgFirm">
                             <button type="button" class="btn btn-danger" id="clear-button" formnovalidate>Borrar</button>
                             <button type="submit" class="btn btn-primary">Enviar</button>
                         </form>
@@ -93,12 +93,12 @@
 
                                 // Guarda la firma en el campo oculto
                                 var signatureData = canvas.toDataURL();
-                                document.getElementById('imagenFirma').value = signatureData;
+                                document.getElementById('imgFirm').value = signatureData;
                             }
 
                             function clearCanvas() {
                                 context.clearRect(0, 0, canvas.width, canvas.height);
-                                document.getElementById('imagenFirma').value = ''; // Borra la firma en el campo oculto
+                                document.getElementById('imgFirm').value = ''; // Borra la firma en el campo oculto
                             }
                         </script>
 

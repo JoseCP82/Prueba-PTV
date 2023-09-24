@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UserResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
@@ -19,6 +20,7 @@ class LoginController extends Controller
                 $user = new UserResponse();
                 $user->userName = $data['Registro']['@attributes']['Nombre'];
                 $user->email = $data['Registro']['@attributes']['Email'];
+                Alert::success('Éxito', 'Usuario logueado con éxito.');
                 return view('formView', compact('user'));
             } else {
                 // Maneja el error de respuesta HTTP de manera apropiada

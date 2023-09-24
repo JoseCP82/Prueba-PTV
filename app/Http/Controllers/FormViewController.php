@@ -6,6 +6,7 @@ use App\Mail\SendMail;
 use App\Models\Technician;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,7 +16,7 @@ class FormViewController extends Controller {
         $user = new Technician();
         $user->userName = $request->input('userName');
         $user->email = $request->input('email');
-        $user->firm = $request->input('imagenFirma');
+        $user->firm = $request->input('imgFirm');
 
         try {
             $user->save();
@@ -34,12 +35,14 @@ class FormViewController extends Controller {
     }
 
     public function pdfGenerator(Technician $user) {
-        $pdf = new Dompdf();
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $pdf = new Dompdf($options);
 
         $html = '<h2>Usuarios</h2>'.
         $html = '<p>'. $user->userName . '</p>'.
         $html = '<p>'. $user->email . '</p>'.
-        $html = '<p>'. $user->firm . '</p>';
+        $html = '<img src="'. $user->firm . '" alt="Firma">';
 
         try {
             $pdf->loadHtml($html);
@@ -54,7 +57,6 @@ class FormViewController extends Controller {
     public function sendPDFMail() {
         $mail = new SendMail();
         Mail::to('josecamarap@gmail.com')->send($mail);
-
         return 'Correo enviado con PDF adjunto.';
     }
 }

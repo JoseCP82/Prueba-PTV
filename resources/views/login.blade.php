@@ -38,7 +38,7 @@
                                 <input type="text" class="form-control" name="dni" placeholder="Ingrese su DNI" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Login</button>
-                        </form>
+                        </form>                        
                     </div>
                 </div>
             </div>
