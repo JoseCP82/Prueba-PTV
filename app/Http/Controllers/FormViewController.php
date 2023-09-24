@@ -15,7 +15,7 @@ class FormViewController extends Controller {
         $user = new Technician();
         $user->userName = $request->input('userName');
         $user->email = $request->input('email');
-        $user->firm = 'firma';
+        $user->firm = $request->input('imagenFirma');
 
         try {
             $user->save();
@@ -24,7 +24,7 @@ class FormViewController extends Controller {
             Alert::error('Error', 'Ocurrió un error en guardado.');
         }
         
-        // $this->pdfGenerator($user);
+        $this->pdfGenerator($user);
         $this->sendPDFMail();
 
         $user->userName = "";

@@ -831,6 +831,7 @@
 </head>
 
 <body class="antialiased">
+
     <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
         <form method="POST" action="{{ route('save') }}">
             @csrf
@@ -842,8 +843,65 @@
                 <label>Email:</label>
                 <input name="email" for="email" value="{{ $user->email }}" readonly></input>
             </div>
+            <canvas id="canvas" width="500" height="300" style="border: 1px solid #000;"></canvas>
+            <!-- Agrega un campo oculto para guardar la firma -->
+            <input type="hidden" id="imagenFirma" name="imagenFirma">
             <button>Enviar</button>
         </form>
+
+        <script>
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            var drawing = false;
+
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mousemove', draw);
+
+            canvas.addEventListener('touchstart', startDrawing);
+            canvas.addEventListener('touchend', stopDrawing);
+            canvas.addEventListener('touchmove', draw);
+
+            document.getElementById('clear-button').addEventListener('click', clearCanvas);
+
+            function startDrawing(e) {
+                drawing = true;
+                draw(e);
+            }
+
+            function stopDrawing() {
+                drawing = false;
+                context.beginPath();
+            }
+
+            function draw(e) {
+                if (!drawing) return;
+
+                context.lineWidth = 2;
+                context.lineCap = 'round';
+                context.strokeStyle = '#000';
+
+                if (e.touches && e.touches[0]) {
+                    context.lineTo(e.touches[0].clientX - canvas.getBoundingClientRect().left, e.touches[0].clientY - canvas.getBoundingClientRect().top);
+                } else {
+                    context.lineTo(e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top);
+                }
+
+                context.stroke();
+                context.beginPath();
+                context.moveTo(e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top);
+
+                // Guarda la firma en el campo oculto
+                var signatureData = canvas.toDataURL();
+                document.getElementById('imagenFirma').value = signatureData;
+            }
+
+            function clearCanvas() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                document.getElementById('imagenFirma').value = ''; // Borra la firma en el campo oculto
+            }
+        </script>
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @include('sweetalert::alert')
     </div>

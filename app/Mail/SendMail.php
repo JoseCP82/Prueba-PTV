@@ -60,7 +60,7 @@ class SendMail extends Mailable
                 <title>Correo con PDF Adjunto</title>
             </head>
             <body>
-                <h1>¡Hola!</h1>
+                <h2>¡Hola!</h2>
                 <p>Fichero PDF adjunto.</p>
             </body>
             </html>
