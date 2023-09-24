@@ -19,12 +19,11 @@
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div col-mx-auto>
-            <img src="https://lh3.googleusercontent.com/p/AF1QipNKCPy7UHhVmDfzwUkEgn-Bp2jNS5F1zrIOd9JD=w1080-h608-p-no-v0" alt="Logotipo" class="card-img-top mx-auto d-block mt-3" style="max-width: 500px;">
+            <div>
+            <img src="https://lh3.googleusercontent.com/p/AF1QipNKCPy7UHhVmDfzwUkEgn-Bp2jNS5F1zrIOd9JD=w1080-h608-p-no-v0" alt="Logotipo" class="card-img-top mx-auto d-block" style="max-width: 400px;">
             </div>
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header">
                     <div class="card-header">
                         Inicio de Sesión
                     </div>
