@@ -9,7 +9,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
-    //
+    /**
+     * Realiza una petición al backend para obtener un usuario, si existe, se carga la vista de 
+     * formulario, en caso contrario permanece en la pantalla de login.
+     * En ambos casos se muestra un mensaje de información.
+     */
     public function getUserByDni(Request $request) {
         try {
             $response = Http::get('http://212.225.255.130:8010/ws/accesotec/'.
@@ -23,11 +27,11 @@ class LoginController extends Controller
                 Alert::success('Éxito', 'Usuario logueado con éxito.');
                 return view('formView', compact('user'));
             } else {
-                // Maneja el error de respuesta HTTP de manera apropiada
-                // Puedes lanzar una excepción o redirigir a una página de error
+                Alert::error('Error', 'El usuario no existe.');
+                return view('login');
             }
         } catch (\Exception $e) {
-            // Manejar otras excepciones si ocurren
+            Alert::error('Error', 'Ocurrió un error.');
         }
     }
 }

@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Mail;
 
 class FormViewController extends Controller {
 
+    /**
+     * Recoge la información del formulario, la guarda en la base de datos local, genera un archivo
+     * pdf, envia un email con el pdf adjunto y setea el formulario.
+     */
     public function saveFormData(Request $request) {
         $user = new Technician();
         $user->userName = $request->input('userName');
@@ -20,13 +24,13 @@ class FormViewController extends Controller {
 
         try {
             $user->save();
-            Alert::success('Éxito', 'Información guardada con éxito.');
+            Alert::success('Éxito', 'Información enviada con éxito.');
         } catch(\Exception $e) {
             Alert::error('Error', 'Ocurrió un error en guardado.');
         }
         
         $this->pdfGenerator($user);
-        $this->sendPDFMail();
+        // $this->sendPDFMail();
 
         $user->userName = "";
         $user->email = "";
@@ -34,6 +38,9 @@ class FormViewController extends Controller {
         return view('/formView', compact('user'));
     }
 
+    /**
+     * Genera un archivo pdf con los datos obtenidos en el formulario.
+     */
     public function pdfGenerator(Technician $user) {
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
@@ -45,18 +52,28 @@ class FormViewController extends Controller {
         $html = '<img src="'. $user->firm . '" alt="Firma">';
 
         try {
-            $pdf->loadHtml($html);
+            $pdf->loadHTML($html);
             $pdf->render();
-            Alert::success('Éxito', 'Archivo pdf descargado con éxito.');
-            return $pdf->stream('usuarios.pdf');
+
+            $pdfOutputPath = storage_path('app/html_to_pdf.pdf');
+
+            // Guarda el PDF en el sistema de archivos
+            file_put_contents($pdfOutputPath, $pdf->output());
+
+            $this->sendPDFMail($pdfOutputPath, $html);
+
+            // $pdf->stream('usuarios.pdf'); //Descarga el archivo pdf en la carpeta descargas
+            // Alert::success('Éxito', 'Archivo pdf descargado con éxito.');
         } catch(\Exception $e) {
             Alert::error('Error', 'Ocurrió un error al generar el archivo PDF.');
         }
     }
 
-    public function sendPDFMail() {
-        $mail = new SendMail();
+    /**
+     * Envia un email a la dirección establecida adjuntando un fichero pdf.
+     */
+    public function sendPDFMail(string $pdfPath, string $htmlContent) {
+        $mail = new SendMail($pdfPath, $htmlContent);
         Mail::to('josecamarap@gmail.com')->send($mail);
-        return 'Correo enviado con PDF adjunto.';
     }
 }

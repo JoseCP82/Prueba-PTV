@@ -3,54 +3,25 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class SendMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public $pdfPath;
+    public $html;
+
+    public function __construct($pdfPath, $html)
     {
-        //
+        $this->pdfPath = $pdfPath;
+        $this->html = $html;
     }
 
     /**
-     * Get the message envelope.
+     * Crea encabezado y cuerpo del email, así como adjunta un fichero pdf para su envío.
      */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Send Mail',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
-    }
-
     public function build()
     {
         $htmlContent = "
@@ -60,15 +31,14 @@ class SendMail extends Mailable
                 <title>Correo con PDF Adjunto</title>
             </head>
             <body>
-                <h2>¡Hola!</h2>
-                <p>Fichero PDF adjunto.</p>
+                <h3>Fichero PDF firmado adjunto.</h3>
             </body>
             </html>
         ";
 
         return $this
             ->subject('Adjunto de PDF')
-            ->html($htmlContent)
-            ->attach('c:\Users\Jose\Downloads\usuarios.pdf');
+            ->attach($this->pdfPath, ['as' => 'usuarios.pdf', 'html_to_pdf.pdf'])
+            ->html($htmlContent);
     }
 }

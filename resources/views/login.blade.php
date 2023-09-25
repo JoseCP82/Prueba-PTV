@@ -28,7 +28,7 @@
                         Inicio de Sesión
                     </div>
                     <div class="card-body">
-                        <form method="GET" action="{{ route('login') }}">
+                        <form method="GET" action="{{ route('loginStart') }}">
                             <div class="mb-3">
                                 <label for="userName" class="form-label">Usuario:</label>
                                 <input type="text" class="form-control" name="userName" placeholder="Ingrese su usuario" required>
