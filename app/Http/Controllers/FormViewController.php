@@ -30,8 +30,7 @@ class FormViewController extends Controller {
         }
         
         $this->pdfGenerator($user);
-        // $this->sendPDFMail();
-
+    
         $user->userName = "";
         $user->email = "";
         $user->firm = "";
@@ -60,7 +59,7 @@ class FormViewController extends Controller {
             // Guarda el PDF en el sistema de archivos
             file_put_contents($pdfOutputPath, $pdf->output());
 
-            $this->sendPDFMail($pdfOutputPath, $html);
+            $this->sendPDFMail($pdfOutputPath, $html, $user->email);
 
             // $pdf->stream('usuarios.pdf'); //Descarga el archivo pdf en la carpeta descargas
             // Alert::success('Éxito', 'Archivo pdf descargado con éxito.');
@@ -72,8 +71,8 @@ class FormViewController extends Controller {
     /**
      * Envia un email a la dirección establecida adjuntando un fichero pdf.
      */
-    public function sendPDFMail(string $pdfPath, string $htmlContent) {
+    public function sendPDFMail(string $pdfPath, string $htmlContent, string $subject) {
         $mail = new SendMail($pdfPath, $htmlContent);
-        Mail::to('josecamarap@gmail.com')->send($mail);
+        Mail::to($subject)->send($mail);
     }
 }
